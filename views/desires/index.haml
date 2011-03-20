@@ -1,0 +1,11 @@
+%h2 All Desires
+
+%ul#desires
+  - unless @desires.empty?
+    - @desires.each do |desire|
+      %a{:href => "/desires/#{desire.id}"}= desire.name
+      %em.author= " by #{desire.author}" if desire.author
+  - else  
+    %li.emptylist
+      No desires :-(
+      %a{:href => "/sessions/new"} Create one? 

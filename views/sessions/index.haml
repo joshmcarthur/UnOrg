@@ -1,0 +1,13 @@
+%h2 All Sessions
+%em Sorted by next up
+
+%ul#sessions
+  - unless @sessions.empty?
+    - @sessions.each do |session|
+      %a{:href => "/sessions/#{session.id}"}= session.name
+      at
+      = session.scheduled_for.strftime("%c")
+  - else  
+    %li.emptylist
+      No sessions :-(
+      %a{:href => "/sessions/new"} Create one? 

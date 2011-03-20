@@ -1,0 +1,12 @@
+%h2.title= @desire.title
+%span.author= "By #{@desire.author || "Anonoymous"}"
+
+%div.description
+  = @desire.description
+  
+%div.controls
+  %a{:href => "/desires/#{@desire.id}/upvote"} Upvote
+  %a{:href => "/desires/#{@desire.id}/edit"} Edit
+  %a{:href => "/desires/#{@desire.id}/resolved"} Mark as resolved
+  %a{:href => "/desires/#{@desire.id}/closed"} Mark as closed
+  

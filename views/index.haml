@@ -1,0 +1,17 @@
+%h2= "#{@number_of_sessions} sessions!"
+%p including...
+%ul#sessions
+  - @sessions.each do |session|
+    %a{:href => "/sessions/#{session.id}"}
+      %strong= session.name
+      at
+      = session.scheduled_for.strftime("%c")
+
+%h2= "#{@number_of_desires} desires!"
+%p including...
+%ul#desires
+  - @desires.each do |desire|
+    %a{:href => "/desires/#{desire.id}"}
+      %strong= desire.title
+      %em.author= " by #{desire.author}" if desire.author
+        

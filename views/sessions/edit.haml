@@ -1,0 +1,15 @@
+%form{:action => "/sessions/#{@session.id}", :method => 'put'}
+  %p
+    %label{:for => 'session[name]'} Session name:
+    %input{:type => 'text', :name => 'session[name]', :id => 'session_name', :value => @session.name}
+  %p
+    %label{:for => 'session[scheduled_for]'} Scheduled for:
+    %input{:type => 'text', :name => 'session[scheduled_for]', :id => 'session_scheduled_for', :class => 'datepicker', :value => @session.scheduled_for.strftime("%d/%m/%Y") || Time.now.strftime("%d/%m/%Y")}
+  %p
+    %label{:for => 'session[description]'} Description:
+    %textarea{:name => 'session[description]', :id => 'session[description]', :class => 'markdown'}= @session.description
+  %p
+    %a{:href => '/sessions', :class => 'cancel'} Cancel
+    %button{:type => 'submit', :class => 'submit'} Create Session
+    
+  

@@ -1,0 +1,15 @@
+%form{:action => '/desires', :method => 'post'}
+  %p
+    %label{:for => 'desire[title]'} Desire name:
+    %input{:type => 'text', :name => 'desire[title]', :id => 'desire_title'}
+  %p
+    %label{:for => 'desire[author]'} Scheduled for:
+    %input{:type => 'text', :name => 'desire[author]', :id => 'desire_author'}
+  %p
+    %label{:for => 'desire[description]'} Description:
+    %textarea{:name => 'desire[description]', :id => 'desire[description]', :class => 'markdown'}
+  %p
+    %a{:href => '/desires', :class => 'cancel'} Cancel
+    %button{:type => 'submit', :class => 'submit'} Create Desire
+    
+  
