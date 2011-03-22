@@ -3,9 +3,9 @@
 %ul#desires
   - unless @desires.empty?
     - @desires.each do |desire|
-      %a{:href => "/desires/#{desire.id}"}= desire.name
+      %a{:href => "/desires/#{desire.id}"}= desire.title
       %em.author= " by #{desire.author}" if desire.author
   - else  
     %li.emptylist
       No desires :-(
-      %a{:href => "/sessions/new"} Create one? 
+      %a{:href => "/desires/new"} Create one? 

@@ -3,11 +3,11 @@
     %label{:for => 'desire[title]'} Desire name:
     %input{:type => 'text', :name => 'desire[title]', :id => 'desire_title'}
   %p
-    %label{:for => 'desire[author]'} Scheduled for:
+    %label{:for => 'desire[author]'} Author:
     %input{:type => 'text', :name => 'desire[author]', :id => 'desire_author'}
   %p
     %label{:for => 'desire[description]'} Description:
-    %textarea{:name => 'desire[description]', :id => 'desire[description]', :class => 'markdown'}
+    %textarea{:name => 'desire[description]', :id => 'desire_description', :class => 'markdown'}
   %p
     %a{:href => '/desires', :class => 'cancel'} Cancel
     %button{:type => 'submit', :class => 'submit'} Create Desire

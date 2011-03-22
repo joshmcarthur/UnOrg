@@ -3,6 +3,9 @@
 
 %div.description
   = @session.description
-
+%div.control_links
+  %a{:href => "/sessions/#{@session.id}/edit"} Edit
+  %form{:action => "/sessions/#{@session.id}/delete", :method => "post"}
+    %input{:type => 'submit', :value => 'Delete'}
 
 

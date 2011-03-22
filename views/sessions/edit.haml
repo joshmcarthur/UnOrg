@@ -1,4 +1,4 @@
-%form{:action => "/sessions/#{@session.id}", :method => 'put'}
+%form{:action => "/sessions/#{@session.id}/update", :method => 'post'}
   %p
     %label{:for => 'session[name]'} Session name:
     %input{:type => 'text', :name => 'session[name]', :id => 'session_name', :value => @session.name}

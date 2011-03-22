@@ -1,10 +1,11 @@
 class SessionObserver
   include DataMapper::Observer
+  require 'rdiscount'
   
   observe Session
   
-  before_transition :to => :sessionified do
-    #TODO create the session? 
-  end
-  
+  before(:save) Proc.new { |session| 
+    session.description = RDiscount.new(session.description, :smart, :filter_html)
+  }
+
 end

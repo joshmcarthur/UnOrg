@@ -30,52 +30,51 @@ I18N = {
 
 set :public, PUBLIC_DIR
 
+configure :test do
+  DataMapper.setup(:default, "sqlite3::memory")
+  DataMapper.auto_upgrade!
+end
+
 configure do
   DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/unorg.db.sqlite3")
   DataMapper.auto_upgrade!
 end
 
 before do
-  
+  @flash = {:notice => nil, :error => nil}
 end
 
 #General routes
 get '/' do
-  @number_of_sessions = Session.count
-  @number_of_desires = Desire.count
-  @sessions = Session.all
-  @desires = Session.all
+  @sessions = Session.display
+  @desires = Desire.all
   haml :index
 end
 
 #Session routes
-get '/sessions' do
-  @sessions = Session.all
-  haml :"sessions/index"
-end
-
-get '/sessions/:id' do
-  @session = Session.find(params[:id])
-  not_found?(@session)
-  haml :"sessions/show"
-end
-
 get '/sessions/new' do  
   haml :"sessions/new"
 end
 
-get '/sessions/edit/:id' do
-  @session = Session.find(params[:id])
+get '/sessions/:id/edit' do
+  @session = Session.get(params[:id])
   not_found?(@session)
   haml :"sessions/edit"
 end
 
-put '/sessions/:id' do
-  @session = Session.find(params[:id])
+post '/sessions/:id/update' do
+  @session = Session.get(params[:id])
   not_found?(@session)
-  
-  @session.update_attributes(params[:session])
-  pretty_save(@session)
+  params[:session] ||= {}
+  @session.update!(params[:session])
+  pretty_update(@session)
+end
+
+post '/sessions/:id/delete' do
+  @session = Session.get(params[:id])
+  not_found?(@session)
+  @session.destroy
+  redirect '/'
 end
 
 post '/sessions' do
@@ -85,26 +84,22 @@ end
 
 
 #Desires routes
-get '/desires' do
-  @desires = Desire.all
-end
-
-get '/desires/:id' do
-  @desire = Desire.find(params[:id])
-  not_found?(@desire)
-  haml :"desires/show"
-end
-
-get '/desires/:id/upvote' do
-  @desire = Desire.find(params[:id])
-  not_found?(@desire)
-  @desire.upvote!
-  redirect '/desires'
-end
-  
-
 get '/desires/new' do
   haml :"desires/new"
+end
+
+post '/desires/:id/upvote' do
+  @desire = Desire.get(params[:id])
+  not_found?(@desire)
+  @desire.upvote!
+  redirect '/'
+end
+
+post '/desires/:id/delete' do
+  @desire = Desire.get(params[:id])
+  not_found?(@desire)
+  @desire.destroy
+  redirect '/'
 end
 
 post '/desires' do
@@ -112,24 +107,49 @@ post '/desires' do
   pretty_save(@desire)
 end
 
-get '/desires/edit' do
+get '/desires/:id/edit' do
+  @desire = Desire.get(params[:id])
+  not_found?(@desire)
+  
   haml :"desires/edit"
 end
 
-put '/desires/:id' do
-  @desire = Desire.find(params[:id])
+post '/desires/:id/update' do
+  @desire = Desire.get(params[:id])
   not_found?(@desire)
 
-  @desire.update_attributes(params[:desire])
-  pretty_save(@desire)
+  @desire.update(params[:desire])
+  pretty_update(@desire)
 end
+
+post '/desires/:id/resolve' do
+  @desire = Desire.get(params[:id])
+  not_found?(@desire)
+  
+  @desire.resolve!
+  redirect '/'
+end
+
+post '/desires/:id/close' do
+  @desire = Desire.get(params[:id])
+  not_found?(@desire)
+  
+  @desire.close!
+  redirect '/'
+end
+
+
 
 # CRUD helpers
 def not_found?(object)
-  error(404, IL18N[:"#{object.class.downcase}_not_found"] || I18N[:not_found]) unless object
+  error(404, I18N[:"#{object.class.name.downcase}_not_found"] || I18N[:not_found]) unless object
 end
 
-def pretty_save(object, params, return_to = nil)
-  return_to = "/#{object.class.downcase.pluralize}" unless return_to
-  object.valid? ? (object.save && redirect(return_to)) : error(400, (I18N[:"#{object.class.downcase}_validation_error"] || I18N[:validation_error]))
+def pretty_save(object, return_to = nil, do_save = true)
+  return_to = "/" unless return_to
+  object.valid? ? ((do_save ? object.save : true) && redirect(return_to)) : error(400, (I18N[:"#{object.class.name.downcase}_validation_error"] || I18N[:validation_error]))
+end
+
+def pretty_update(object, return_to = nil)
+  pretty_save(object, return_to, false)
 end

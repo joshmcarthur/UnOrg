@@ -5,8 +5,14 @@
   = @desire.description
   
 %div.controls
-  %a{:href => "/desires/#{@desire.id}/upvote"} Upvote
+  %form{:action => "/desires/#{@desire.id}/upvote", :method => "post"}
+    %input{:type => 'submit', :value => 'Upvote'}
   %a{:href => "/desires/#{@desire.id}/edit"} Edit
-  %a{:href => "/desires/#{@desire.id}/resolved"} Mark as resolved
-  %a{:href => "/desires/#{@desire.id}/closed"} Mark as closed
+  %form{:action => "/desires/#{@desire.id}/delete", :method => "post"}
+    %input{:type => 'submit', :value => 'Delete'}
+  %form{:action => "/desires/#{@desire.id}/resolve", :method => "post"}
+    %input{:type => 'submit', :value => 'Mark as resolved'}
+  %form{:action => "/desires/#{@desire.id}/close", :method => "post"}
+    %input{:type => 'submit', :value => 'Close'}
+
   

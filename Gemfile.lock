@@ -61,6 +61,7 @@ GEM
     rack (1.2.2)
     rack-test (0.5.7)
       rack (>= 1.0)
+    rdiscount (1.6.8)
     rspec (2.4.0)
       rspec-core (~> 2.4.0)
       rspec-expectations (~> 2.4.0)
@@ -91,6 +92,7 @@ DEPENDENCIES
   do_sqlite3
   haml
   rack-test
+  rdiscount
   rspec (= 2.4.0)
   sinatra (= 1.1.2)
   state_machine
